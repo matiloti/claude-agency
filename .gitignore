@@ -1,0 +1,8 @@
+# Project working directories (each project has its own git repos inside)
+projects/
+
+# Local backup snapshots
+snapshots/
+
+# macOS system files
+.DS_Store
