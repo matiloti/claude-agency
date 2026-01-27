@@ -102,12 +102,90 @@ This skill covers:
 - Error handling patterns
 - EAS Hosting limitations (Cloudflare Workers runtime)
 
+### `expo` Skill (Performance)
+
+Invoke this skill when:
+- Optimizing app startup time and Time to Interactive
+- Implementing or optimizing lists with FlashList
+- Working with images (expo-image, placeholders, preloading)
+- Implementing animations with Reanimated
+- Reducing bundle size for mobile
+- Reviewing code for mobile-specific performance issues
+- Managing memory and cleanup in React Native
+
+This skill provides 42 rules across 8 categories:
+- **Launch Time** (CRITICAL): Splash screen control, preloading, Hermes, New Architecture
+- **Bundle Size** (CRITICAL): Avoid barrel files, analyze size, architecture-specific APKs
+- **List Virtualization** (HIGH): FlashList, estimatedItemSize, memoization
+- **Image Optimization** (HIGH): expo-image, WebP, BlurHash placeholders
+- **Navigation Performance** (MEDIUM-HIGH): Native stack, unmount inactive screens
+- **Re-render Prevention** (MEDIUM): React.memo, useCallback, React Compiler
+- **Animation Performance** (MEDIUM): Reanimated, native driver, Gesture Handler
+- **Memory Management** (LOW-MEDIUM): Cleanup, abort requests, avoid leaks
+
+**Note**: Prefer this skill over `vercel-react-best-practices` for React Native mobile-specific optimizations.
+
+### `react-native-expo` Skill
+
+Invoke this skill when:
+- Starting a new Expo SDK 52-54 project
+- Migrating to New Architecture (mandatory in RN 0.82+/SDK 55+)
+- Upgrading to React 19 (removing propTypes, forwardRef)
+- Encountering Fabric or TurboModule errors
+- Debugging iOS crashes with Hermes + New Architecture
+- Migrating from expo-av to expo-audio/expo-video
+- Migrating from expo-file-system legacy API
+- Fixing Swift AppDelegate issues
+
+This skill covers:
+- React Native 0.76-0.82+ breaking changes
+- New Architecture migration (mandatory in 0.82+)
+- React 19 changes (propTypes removed, forwardRef deprecated)
+- Swift iOS template default (0.77+)
+- Metro log forwarding removed (0.77+)
+- Chrome debugger removed (0.79+)
+- 16 documented error prevention patterns
+- expo-av → expo-audio/expo-video migration
+- expo-file-system legacy → new File/Directory API
+
+### `upgrading-expo` Skill
+
+Invoke this skill when:
+- Upgrading Expo SDK versions
+- Running `npx expo install --fix` or `expo-doctor`
+- Migrating deprecated packages (expo-av, expo-permissions, etc.)
+- Dealing with breaking changes between SDK versions
+- Cleaning up outdated configs (metro, babel, postcss)
+- Removing no-longer-needed patches
+
+This skill covers:
+- Step-by-step upgrade process
+- Breaking changes checklist by SDK version
+- Deprecated packages and their replacements
+- React 19 and React Compiler setup (SDK 54+)
+- New Architecture (enabled by default SDK 53+)
+- Housekeeping (remove redundant configs)
+
+### `expo-app-design` Skill
+
+Invoke this skill when:
+- Setting up Expo Router navigation
+- Implementing styling with NativeWind/Tailwind
+- Building cross-platform UI components
+- Working with native tabs and animations
+
+This skill references Expo's official patterns for building beautiful cross-platform mobile apps.
+
 ### Skill Invocation Strategy
 
 1. **For new features**: Check if the feature involves navigation, native modules, or offline sync — invoke `react-native-architecture`.
-2. **For performance work**: Invoke `vercel-react-best-practices` when optimizing components, data fetching, or bundle size.
-3. **For API integration**: If the mobile app needs server-side secrets or proxying, invoke `expo-api-routes`.
-4. **For code review**: Invoke `vercel-react-best-practices` to check against the 57 performance rules.
+2. **For mobile performance**: Invoke `expo` when optimizing startup, lists, images, animations, or bundle size (React Native specific).
+3. **For web/React performance**: Invoke `vercel-react-best-practices` for general React patterns (waterfalls, memoization, bundle splitting).
+4. **For API integration**: If the mobile app needs server-side secrets or proxying, invoke `expo-api-routes`.
+5. **For SDK upgrades**: Invoke `upgrading-expo` when upgrading Expo SDK or dealing with breaking changes.
+6. **For New Architecture/React 19 issues**: Invoke `react-native-expo` for migration issues, Fabric/TurboModule errors, or React 19 changes.
+7. **For styling/navigation setup**: Invoke `expo-app-design` when setting up Expo Router or NativeWind.
+8. **For code review**: Invoke `expo` for mobile-specific issues, `vercel-react-best-practices` for general React patterns.
 
 **Note**: Max 3 skill invocations per task. Prioritize based on the primary focus of your work.
 
