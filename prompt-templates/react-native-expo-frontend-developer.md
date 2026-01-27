@@ -39,6 +39,20 @@ Read the following knowledge files for context:
 ### Troubleshooting
 When facing errors or bugs, search online resources: GitHub issues, StackOverflow, Reddit. Look for similar error messages or symptoms before implementing fixes.
 
+### Collaborative Debugging Fallback (Last Resort)
+If you've made 5 failed attempts to solve the same error/bug and are still stuck:
+1. STOP making further attempts yourself.
+2. Spawn 5 subagents in parallel (using the Task tool with `subagent_type: "general-purpose"`), each exploring a DIFFERENT potential solution:
+   - Subagent 1: Search GitHub issues for the exact error message
+   - Subagent 2: Search StackOverflow/Reddit for similar symptoms
+   - Subagent 3: Try an alternative library/approach to the problematic code
+   - Subagent 4: Investigate if it's a version/dependency incompatibility
+   - Subagent 5: Check if the issue is environmental (Docker, config, permissions)
+3. Collect their findings and synthesize the most promising solution.
+4. If still unresolved after this step, escalate to the orchestrator with full context.
+
+**Important**: Only use this fallback after genuine 5 failed fix attempts. Do not invoke it prematurely.
+
 ### Escalation
 If you encounter a blocker (missing API spec, unclear UX, missing design tokens):
 - STOP — do NOT proceed with assumptions.
