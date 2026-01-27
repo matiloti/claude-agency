@@ -381,6 +381,19 @@ Key locations:
 - `knowledge/blockers/` - Active blocking issues
 - `knowledge/orchestration/` - Orchestration workflow documentation
 
+## Context Window Recovery
+
+When resuming after context compaction or starting a new session mid-project:
+
+1. Read `knowledge/project-status.md` for current state
+2. Read `ISSUES.md` for any active blockers
+3. Check `sessions/` for recent session logs (understand what was just completed)
+4. Read any pending Judge reviews in `knowledge/reviews/`
+5. Check `knowledge/handoffs/` for in-progress work transitions
+6. Review the task list if one exists
+
+Resume work from where it was left off based on the gathered context.
+
 ---
 
 # Getting Started
