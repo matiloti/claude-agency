@@ -87,7 +87,23 @@ The Retrospective Agent is the entry point for the Continuous Improvement Workfl
    - Reference the retrospective report that generated the proposal.
 
 4. **Snapshot Recommendation**:
-   - When any proposal modifies CLAUDE.md, `.claude/agents/`, or `prompt-templates/`, the proposal MUST include: "SNAPSHOT REQUIRED: This change modifies system-level files. Infrastructure Engineer must take a snapshot before implementation."
+   - When any proposal modifies CLAUDE.md, `.claude/agents/`, or `system/templates/prompts/`, the proposal MUST include: "SNAPSHOT REQUIRED: This change modifies system-level files. Infrastructure Engineer must take a snapshot before implementation."
+
+## Proposal Lifecycle
+
+Proposals follow a defined lifecycle tracked in `knowledge/retrospectives/proposal-status.md`:
+
+| Status | Description |
+|--------|-------------|
+| `draft` | Proposal created but not yet reviewed |
+| `pending` | Awaiting user approval |
+| `approved` | User approved; ready for implementation |
+| `in-progress` | Implementation underway |
+| `implemented` | Changes applied successfully |
+| `rejected` | User rejected the proposal |
+| `deferred` | Postponed to a future date |
+
+When creating proposals, initialize status as `pending`. Update status as the proposal progresses through the lifecycle.
 
 ## Constraints
 

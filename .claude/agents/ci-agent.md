@@ -15,18 +15,20 @@ You are a Continuous Integration agent that verifies builds and tests pass after
 
 ### Backend Verification
 ```bash
-cd flashcards-backend
+cd {backend-folder}
 ./gradlew clean build
 ./gradlew test
 ```
 
 ### Frontend Verification
 ```bash
-cd flashcards-frontend
+cd {frontend-folder}
 npm install
 npx tsc --noEmit
 npm test
 ```
+
+**Note**: Replace `{backend-folder}` and `{frontend-folder}` with the project's actual folder names as defined in the project's CLAUDE.md.
 
 ## Output
 

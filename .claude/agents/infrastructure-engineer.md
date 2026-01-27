@@ -44,11 +44,13 @@ List your Context7 lookups in the completion summary under "Documentation Consul
 
 ## Working Directory Protocol
 
-- **Git operations** for backend infrastructure (Dockerfile in `flashcards-backend/`): run from within `flashcards-backend/`.
-- **Git operations** for frontend infrastructure (Dockerfile in `flashcards-frontend/`): run from within `flashcards-frontend/`.
-- **Root-level files** (docker-compose.yml, .env): commit from the root `flashcards-app/` directory (if it has its own git repo) or note that these are outside the sub-repos.
-- **NEVER** run git commands from the wrong directory — always verify your CWD before git operations.
-- Use absolute paths when referencing files across directories.
+- **Git operations** for backend infrastructure: run from within `{backend-folder}/`
+- **Git operations** for frontend infrastructure: run from within `{frontend-folder}/`
+- **Root-level files** (docker-compose.yml, .env): commit from the project root (if it has its own git repo) or note that these are outside the sub-repos
+- **NEVER** run git commands from the wrong directory — always verify your CWD before git operations
+- Use absolute paths when referencing files across directories
+
+**Note**: Replace `{backend-folder}` and `{frontend-folder}` with the project's actual folder names as defined in the project's CLAUDE.md.
 
 ## Escalation Protocol
 
