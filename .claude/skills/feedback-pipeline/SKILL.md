@@ -16,7 +16,7 @@ This pipeline produces prioritized, actionable recommendations through parallel 
 
 - [ ] Target files must exist and be readable
 - [ ] User has approved running the pipeline
-- [ ] For system-level targets (CLAUDE.md, .claude/, prompt-templates/), snapshot should be taken before implementing results
+- [ ] For system-level targets (CLAUDE.md, .claude/, system/templates/prompts/), snapshot should be taken before implementing results
 
 ## Exit States
 
@@ -45,7 +45,7 @@ This prevents re-discovering insights that were already captured as quick ideas.
 
 1. Determine the **scope**: Based on "$ARGUMENTS", identify the specific files, folders, or systems to analyze. This scope must be passed to EVERY subagent so they know exactly what to read.
    - **Recommendation Scope:** Recommendations MUST only modify primary targets. If analysis reveals issues in context files (files read for understanding but not specified as targets), flag those as "Out of Scope" in the final report rather than including them as actionable items.
-   - **System-Level Targets:** If the target includes `CLAUDE.md`, `.claude/`, or `prompt-templates/`, flag this as a system-level analysis. The final report should recommend caution to avoid cluttering these files with too many lines, and suggest taking a snapshot before implementing changes.
+   - **System-Level Targets:** If the target includes `CLAUDE.md`, `.claude/`, or `system/templates/prompts/`, flag this as a system-level analysis. The final report should recommend caution to avoid cluttering these files with too many lines, and suggest taking a snapshot before implementing changes.
 2. Derive a **timestamped folder name** using the current time in `YYYY-MM-DDThh-mm-ss` format followed by a topic slug:
    - Generate timestamp from current time (e.g., `2026-01-25T14-30-00`)
    - Strip leading articles and possessives from the topic (the, a, an, our, my, their)
@@ -314,7 +314,7 @@ After generating the final report, scan other `feedbacks/*/final_feedback.md` fi
 
 Add a `## Potential Conflicts` section to the final report if any are found.
 
-**Note:** This check is REQUIRED when the target includes `CLAUDE.md`, `.claude/`, or `prompt-templates/`. For other targets, it is optional but recommended.
+**Note:** This check is REQUIRED when the target includes `CLAUDE.md`, `.claude/`, or `system/templates/prompts/`. For other targets, it is optional but recommended.
 
 ---
 

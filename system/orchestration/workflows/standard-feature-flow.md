@@ -1,6 +1,6 @@
 # Standard Feature Flow
 
-<!-- Last Updated: 2026-01-26 -->
+<!-- Last Updated: 2026-01-27 -->
 <!-- Status: Current -->
 <!-- Author: documentation-agent -->
 
@@ -48,7 +48,8 @@ The complete workflow for implementing a new feature:
 11. **Integration** - Infrastructure Engineer integrates new services, updates compose if needed.
 12. **Test** - QA Tester validates the full feature.
 13. **Regression Test** - QA Tester (or CI Agent) runs the full existing test suite (`./gradlew test` and `npm test`) to verify no regressions.
-14. **Review** - Judge reviews QA results and gives final verdict.
+14. **iOS Testing** - Execute the [iOS Testing Pipeline](../pipelines/ios-testing-pipeline.md) with the new feature to verify visual/UX quality on iOS simulator.
+15. **Review** - Judge reviews QA results and gives final verdict.
 
 **Notes**:
 - Steps 5-6 and 11 are skipped if the Infrastructure Gate Checklist results are all No.
@@ -60,7 +61,7 @@ The complete workflow for implementing a new feature:
 
 ## Exit States
 
-- **Success**: All 14 steps completed, final Judge verdict is APPROVED, code pushed to remote
+- **Success**: All 15 steps completed, final Judge verdict is APPROVED, code pushed to remote
 - **Failure**: Judge issues REJECTED verdict at any step, or user cancels feature
 - **Partial**: Feature blocked mid-workflow; partial work committed locally, blocker documented
 
@@ -73,14 +74,14 @@ For each active feature, the orchestrator maintains state in `knowledge/workflow
 ```markdown
 # Active Feature: {feature name}
 
-**Current Phase**: {1-14}
+**Current Phase**: {1-15}
 **Started**: {ISO date}
 **Last Updated**: {ISO date}
 
 ## Phase History
 | Phase | Status | Agent | Date | Notes |
 |-------|--------|-------|------|-------|
-| 1. Ideate | completed | ideator | 2026-01-25 | US-DM-01 created |
+| 1. Ideate | completed | {project}-product-ideator | 2026-01-25 | US-DM-01 created |
 | 2. Review | completed | judge | 2026-01-25 | APPROVED |
 | 3. Architect | in_progress | architect | 2026-01-25 | |
 
@@ -102,3 +103,4 @@ The orchestrator updates this file before spawning each subagent.
 - [Parallel Work Protocol](./parallel-work-protocol.md)
 - [Revision Flow](./revision-flow.md)
 - [Phase Rollback](./phase-rollback.md)
+- [iOS Testing Pipeline](../pipelines/ios-testing-pipeline.md)

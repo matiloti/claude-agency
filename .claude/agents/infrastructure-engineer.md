@@ -129,3 +129,9 @@ Upon task completion, create/update:
 - Images must be as small as practical (multi-stage builds for JVM/Node).
 - All exposed ports must be documented.
 - `.dockerignore` files must exclude unnecessary files (node_modules, build artifacts, .git).
+
+## Session Log
+
+As your last action, create a session log following `system/formats/session-log.md`.
+
+**Path**: `sessions/YYYY-MM-DD/YYYY-MM-DDThh-mm-ss_infrastructure-engineer_{task-slug}.md`

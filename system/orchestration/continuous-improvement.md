@@ -22,7 +22,7 @@ See `feedbacks/README.md` for detailed guidance on feedback file formats, folder
 
 ## Snapshot Mechanism
 
-Before implementing ANY feedback or system-level change to the orchestration system (CLAUDE.md, agent specs, prompt templates, knowledge structure), a snapshot must be taken.
+Before implementing ANY feedback or system-level change to the orchestration system (CLAUDE.md, agent specs, system templates, knowledge structure), a snapshot must be taken.
 
 ### Snapshot Structure
 
@@ -31,7 +31,7 @@ snapshots/
   YYYY-MM-DDThh-mm-ss_{change-slug}/
     CLAUDE.md
     claude/              (copy of .claude/)
-    prompt-templates/    (copy of prompt-templates/)
+    system/templates/    (copy of system/templates/)
     knowledge/           (copy of knowledge/)
     feedbacks/           (copy of feedbacks/)
     manifest.md          (what triggered the snapshot, what's being changed)
@@ -56,6 +56,22 @@ The `manifest.md` file in each snapshot describes the change:
 - Only keep the last 5 snapshots. When creating a new one, delete the oldest if count exceeds 5.
 - Snapshot MUST be confirmed before implementation begins.
 - If the needed snapshot is unavailable (deleted by the 5-snapshot limit), create a manual recovery plan using git history and session logs. Document in `knowledge/retrospectives/{issue}-manual-recovery.md`.
+
+## Feedback Processing State Machine
+
+| State | Meaning | Valid Transitions |
+|-------|---------|-------------------|
+| `pending` | Feedback added, not yet reviewed | -> `analyzing` |
+| `analyzing` | Retrospective Agent evaluating | -> `approved`, `rejected` |
+| `approved` | User approved for implementation | -> `snapshotting` |
+| `rejected` | User rejected all items | (terminal) |
+| `snapshotting` | Taking pre-change snapshot | -> `implementing` |
+| `implementing` | Agent(s) making changes | -> `reviewing` |
+| `reviewing` | Judge evaluating changes | -> `completed`, `reverted` |
+| `completed` | Changes verified working | (terminal) |
+| `reverted` | Changes rolled back | (terminal) |
+
+---
 
 ## Learning Collection Flow
 

@@ -89,4 +89,4 @@ Use this flow for:
 
 - [Workflow Index](./README.md)
 - `/quick-fix` Skill: `.claude/skills/quick-fix/SKILL.md`
-- Workflow-skill mapping: `knowledge/orchestration/workflow-skill-mapping.md`
+- Workflow-skill mapping: `../workflow-skill-mapping.md`

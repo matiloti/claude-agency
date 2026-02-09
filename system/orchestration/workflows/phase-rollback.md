@@ -1,36 +1,62 @@
-# Workflow Phase Rollback
+# Phase Rollback Protocol
 
-<!-- Last Updated: 2026-01-26 -->
+<!-- Last Updated: 2026-01-27 -->
 <!-- Status: Current -->
-<!-- Author: documentation-agent -->
+<!-- Author: prompt-engineer -->
 
-When the Judge determines a fundamental flaw exists in an earlier phase, this flow handles rolling back to that phase.
-
----
-
-## 1. Judge Issues Verdict
-
-Judge issues `ROLLBACK_TO_PHASE_{N}` verdict, specifying:
-- Which phase needs to be redone (e.g., Architecture, Ideation).
-- What the fundamental flaw is.
-- What constraints the redo must address.
+When the Judge identifies a fundamental flaw in an earlier phase, this protocol governs the rollback process.
 
 ---
 
-## 2. Orchestrator Actions
+## Trigger
 
-- Archives current artifacts by adding a `_superseded` suffix to affected knowledge files.
-- Notifies the user of the rollback with rationale.
-- Restarts the workflow from the specified phase with the Judge's constraints included in the prompt.
-- All subsequent phases must be re-executed after the rolled-back phase.
+Judge issues `ROLLBACK_TO_PHASE_{N}` verdict specifying:
+- Target phase number and name
+- Fundamental flaw description
+- Constraints for redo
 
 ---
 
-## 3. Constraints
+## Phase Confirmation Matrix
 
-- Rollbacks to Ideation (phase 1) require user confirmation.
-- Rollbacks to Architecture (phase 3) are allowed without user confirmation if the Judge provides clear rationale.
-- Already-pushed code must be handled via new commits (not force-push).
+| Phase | Name | User Confirmation | Rationale |
+|-------|------|-------------------|-----------|
+| 1 | Ideation | Required | Fundamental direction change |
+| 2 | Review | Not required | Judge-initiated, rationale provided |
+| 3 | Architecture | Not required | Technical decision (clear rationale) |
+| 4 | Infrastructure | Not required | Technical decision |
+| 5+ | Implementation | Not required | Technical decision |
+
+---
+
+## Orchestrator Actions
+
+1. Archive current artifacts: add `_superseded` suffix to affected knowledge files
+2. Notify user of rollback with rationale
+3. Restart workflow from specified phase with Judge's constraints in prompt
+4. Re-execute all subsequent phases after rolled-back phase
+
+---
+
+## User Denial Handling (Phase 1 Only)
+
+If user denies Phase 1 rollback request:
+
+| Option | Description | When to Use |
+|--------|-------------|-------------|
+| Proceed with risks | Document risks in knowledge file, continue | Minor concerns, user accepts consequences |
+| Escalate for discussion | Pause workflow, gather more context | Ambiguous situation, need clarification |
+| Abandon feature | Archive all artifacts, close feature | Irreconcilable conflict, user rejects direction |
+
+**Required**: User must explicitly choose one option. Do not proceed without explicit selection.
+
+---
+
+## Constraints
+
+- Already-pushed code: handle via new commits, never force-push
+- Archived files: preserve for audit trail, do not delete
+- Subsequent phases: all must re-execute after rollback target
 
 ---
 

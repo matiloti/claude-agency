@@ -10,7 +10,7 @@ Execute the Revision Flow when a Judge issues `NEEDS_REVISION` verdict. This ski
 |-----------|----------|-------------|
 | failed_artifact | Yes | Path to the work that needs revision |
 | judge_feedback | Yes | Path to the Judge's review file with feedback |
-| agent_type | Yes | Which agent should revise: `ideator`, `architect`, `backend`, `frontend`, `qa`, `infrastructure` |
+| agent_type | Yes | Which agent should revise: `{project}-product-ideator`, `architect`, `backend`, `frontend`, `qa`, `infrastructure` |
 | iteration | No | Current iteration number (1, 2, or 3). Default: 1 |
 
 ## Preconditions
@@ -89,7 +89,7 @@ Build the revision prompt including:
 4. Previous revision attempts (if any)
 5. Instruction to create fix commits (not amend)
 
-Reference: `prompt-templates/README.md` for the Revision Prompt Template.
+Reference: `system/templates/prompts/README.md` for the Revision Prompt Template.
 
 ### Step 2: Spawn Revision Agent
 
@@ -216,4 +216,4 @@ Revision tracking is maintained in:
 - Full workflow documentation: `knowledge/orchestration/workflows/revision-flow.md`
 - Interpretation Dispute Protocol: `knowledge/orchestration/workflows/revision-flow.md`
 - Workflow-skill mapping: `knowledge/orchestration/workflow-skill-mapping.md`
-- Prompt templates: `prompt-templates/README.md`
+- Prompt templates: `system/templates/prompts/README.md`

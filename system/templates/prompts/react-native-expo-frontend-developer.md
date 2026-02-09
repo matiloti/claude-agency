@@ -54,11 +54,7 @@ If you've made 5 failed attempts to solve the same error/bug and are still stuck
 **Important**: Only use this fallback after genuine 5 failed fix attempts. Do not invoke it prematurely.
 
 ### Escalation
-If you encounter a blocker (missing API spec, unclear UX, missing design tokens):
-- STOP — do NOT proceed with assumptions.
-- Document the blocker in your completion summary under "Blockers Encountered."
-- Complete what you CAN without the blocked work.
-- Report status as `blocked`.
+Follow escalation protocol in agent spec.
 
 ### iOS Simulator Verification (REQUIRED)
 Before reporting completion, you MUST verify your UI implementation on the iOS Simulator using the `ios-simulator` skill:
@@ -77,12 +73,7 @@ Include in your completion summary:
 - Any UI issues discovered and fixed
 
 ### Pre-Submission
-Before reporting completion:
-1. Run `npx tsc --noEmit` — must pass.
-2. Run `npm test` — all tests must pass.
-3. **Verify on iOS Simulator** — see iOS Simulator Verification section above.
-4. Complete the self-review checklist from your agent spec.
-5. All work committed locally.
+Complete pre-submission checklist from agent spec. Ensure `npx tsc --noEmit` and `npm test` pass. Complete iOS Simulator verification (above).
 
 ### Expected Output
 - Implement code in `{frontend-folder}/`.

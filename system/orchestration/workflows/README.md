@@ -16,7 +16,6 @@ This folder contains all orchestration workflows for the flashcards app multi-ag
 | Quick Fix Flow | [quick-fix-flow.md](./quick-fix-flow.md) | Config fixes, typos, dependency bumps |
 | Revision Flow | [revision-flow.md](./revision-flow.md) | After NEEDS_REVISION verdict |
 | Parallel Work Protocol | [parallel-work-protocol.md](./parallel-work-protocol.md) | Backend + Frontend after architecture |
-| Architecture Amendment | [architecture-amendment-flow.md](./architecture-amendment-flow.md) | Implementation reveals design flaw |
 | Phase Rollback | [phase-rollback.md](./phase-rollback.md) | Fundamental flaw in earlier phase |
 
 ---
@@ -139,4 +138,4 @@ Some bounded workflows have corresponding skills:
 - **Quick Fix Flow** -> `.claude/skills/quick-fix/SKILL.md`
 - **Revision Flow** -> `.claude/skills/revision/SKILL.md`
 
-See `knowledge/orchestration/workflow-skill-mapping.md` for the complete mapping and rationale.
+See `../workflow-skill-mapping.md` for the complete mapping and rationale.

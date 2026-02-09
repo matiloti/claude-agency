@@ -138,5 +138,5 @@ Quick Fix is NOT appropriate for:
 
 ## Related Documentation
 
-- Full workflow documentation: `knowledge/orchestration/workflows/quick-fix-flow.md`
-- Workflow-skill mapping: `knowledge/orchestration/workflow-skill-mapping.md`
+- Full workflow documentation: `system/orchestration/workflows/quick-fix-flow.md`
+- Workflow-skill mapping: `system/orchestration/workflow-skill-mapping.md`

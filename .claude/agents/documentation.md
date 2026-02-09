@@ -41,4 +41,6 @@ All documentation must include:
 
 ## Session Log
 
-As your last action, create a session log file in `sessions/YYYY-MM-DD/` following the standard session log format defined in CLAUDE.md.
+As your last action, create a session log following `system/formats/session-log.md`.
+
+**Path**: `sessions/YYYY-MM-DD/YYYY-MM-DDThh-mm-ss_documentation_{task-slug}.md`

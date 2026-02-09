@@ -48,7 +48,7 @@ claude-agency/
 ├── .claude/
 │   ├── agents/             # Tech-specific and generic agent specs
 │   └── skills/             # Shared skills
-├── prompt-templates/       # Shared prompt templates
+├── system/templates/prompts/  # Shared prompt templates
 ├── system/                 # Cross-project learnings
 │   ├── common-issues.md
 │   ├── best-practices.md
@@ -66,5 +66,5 @@ claude-agency/
 
 - Base configuration: `CLAUDE.base.md`
 - Agent specs: `.claude/agents/`
-- Prompt templates: `prompt-templates/`
+- Prompt templates: `system/templates/prompts/`
 - Cross-project learnings: `system/`

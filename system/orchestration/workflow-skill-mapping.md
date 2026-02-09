@@ -1,6 +1,6 @@
 # Workflow-Skill Mapping
 
-**Last Updated**: 2026-01-26
+**Last Updated**: 2026-01-27
 **Status**: Current
 
 Maps workflows to their skill implementations (where applicable).
@@ -14,10 +14,14 @@ Maps workflows to their skill implementations (where applicable).
 | Standard Feature Flow | N/A | Documentation only | Multi-session, requires orchestrator judgment at each step |
 | Quick Fix Flow | `/quick-fix` | Implemented | Bounded, 4-step (including Step 0 validation) |
 | Revision Flow | `/revision` | Implemented | Bounded, max 3 iterations, enforced limit |
+| Feedback Processing Flow | `/feedback-pipeline` | Implemented | From continuous-improvement.md |
+| N/A | `/quick-feedback-capture` | Implemented | Standalone skill, no parent workflow |
 | Parallel Work Conflict Protocol | N/A | Documentation only | Triggered mid-flow, context-dependent |
 | Architecture Amendment Flow | N/A | Documentation only | Triggered mid-flow, requires architect judgment |
 | Workflow Phase Rollback | N/A | Documentation only | Requires orchestrator judgment, user confirmation |
 | Dynamic Workflow Classification | N/A | Documentation only | Entry-point decision logic, not a standalone workflow |
+
+> **Scope Note**: This document maps orchestration workflows to skills. Tech-specific skills (expo-api-routes, mobile-ios-design, supabase-postgres-best-practices, etc.) are documented separately in their respective SKILL.md files and do not have corresponding workflows.
 
 ---
 
@@ -78,6 +82,6 @@ Workflows that ARE skills share these characteristics:
 
 ## Related Documentation
 
-- Workflow definitions: `knowledge/orchestration/workflows/`
+- Workflow definitions: `workflows/`
 - Skill pattern reference: `.claude/skills/*/SKILL.md`
 - Orchestration rules: `CLAUDE.md` (Orchestration Rules section)

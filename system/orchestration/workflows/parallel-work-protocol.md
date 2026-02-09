@@ -21,9 +21,19 @@ If a parallel agent discovers the architecture is incomplete, incorrect, or ambi
 
 - Holds pending work for the other parallel track (does not spawn new subagent tasks for it until blocker is resolved).
 - Creates a `knowledge/blockers/{agent}-{issue-slug}.md` file describing the issue.
-- Spawns the Architect for an amendment (see [Architecture Amendment Flow](./architecture-amendment-flow.md)).
+- Spawns the Architect for an amendment (see [Architecture Amendment Pipeline](../pipelines/architecture-amendment-pipeline.md)).
 - After amendment is approved by Judge, notifies both agents of the resolution.
 - Resumes parallel work with updated architecture context.
+
+### If Amendment Rejected
+
+If Judge rejects the architecture amendment:
+1. Orchestrator documents rejection reason in blocker file
+2. Options presented to user:
+   - **Retry**: Architect produces revised amendment (max 2 attempts)
+   - **Escalate**: User provides guidance on direction
+   - **Abandon**: Feature marked as blocked; parallel work paused
+3. Blocked agent remains on hold until resolution
 
 ---
 
@@ -47,5 +57,5 @@ Resolve the prioritized blocker first.
 
 - [Workflow Index](./README.md)
 - [Standard Feature Flow](./standard-feature-flow.md) - Steps 7-10 reference parallel work
-- [Architecture Amendment Flow](./architecture-amendment-flow.md)
+- [Architecture Amendment Pipeline](../pipelines/architecture-amendment-pipeline.md)
 - Handoff Protocol: `CLAUDE.md` (Handoff Protocol section)

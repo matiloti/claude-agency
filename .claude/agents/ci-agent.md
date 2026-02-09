@@ -70,3 +70,9 @@ If builds fail:
 - Report the failure clearly in the build report.
 - Do NOT attempt to fix the code — that's the developer's job.
 - The orchestrator will send the failure back to the responsible developer agent.
+
+## Session Log
+
+As your last action, create a session log following `system/formats/session-log.md`.
+
+**Path**: `sessions/YYYY-MM-DD/YYYY-MM-DDThh-mm-ss_ci-agent_{task-slug}.md`

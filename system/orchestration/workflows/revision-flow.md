@@ -21,7 +21,7 @@ When the Judge issues `NEEDS_REVISION`, this flow handles the revision cycle wit
 When the Judge issues `NEEDS_REVISION`:
 
 0. **Validate iteration count** - Check if this is attempt 1, 2, or 3. If already at 3 failed attempts, skip to Escalation.
-1. Orchestrator constructs a revision prompt (see `prompt-templates/README.md` for the Revision Prompt Template).
+1. Orchestrator constructs a revision prompt (see `system/templates/prompts/README.md` for the Revision Prompt Template).
 2. Spawn a new subagent with the full revision prompt.
 3. The agent revises their work and creates fix commits.
 4. Re-submit to the Judge for re-review.
@@ -71,5 +71,5 @@ When 3 revision attempts fail, escalate to the user with:
 
 - [Workflow Index](./README.md)
 - `/revision` Skill: `.claude/skills/revision/SKILL.md`
-- [Architecture Amendment Flow](./architecture-amendment-flow.md)
-- Workflow-skill mapping: `knowledge/orchestration/workflow-skill-mapping.md`
+- [Architecture Amendment Pipeline](../pipelines/architecture-amendment-pipeline.md)
+- Workflow-skill mapping: `../workflow-skill-mapping.md`

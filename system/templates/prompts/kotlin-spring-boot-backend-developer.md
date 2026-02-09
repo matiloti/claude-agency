@@ -55,18 +55,10 @@ If you've made 5 failed attempts to solve the same error/bug and are still stuck
 **Important**: Only use this fallback after genuine 5 failed fix attempts. Do not invoke it prematurely.
 
 ### Escalation
-If you encounter a blocker (missing spec, unclear requirement, conflicting architecture):
-- STOP — do NOT proceed with assumptions.
-- Document the blocker in your completion summary under "Blockers Encountered."
-- Complete what you CAN without the blocked work.
-- Report status as `blocked`.
+Follow escalation protocol in agent spec.
 
 ### Pre-Submission
-Before reporting completion:
-1. Run `./gradlew build` — must pass.
-2. Run `./gradlew test` — all tests must pass.
-3. Complete the self-review checklist from your agent spec.
-4. All work committed locally.
+Complete pre-submission checklist from agent spec. Ensure `./gradlew build` and `./gradlew test` pass.
 
 ### Expected Output
 - Implement code in `{backend-folder}/`.
