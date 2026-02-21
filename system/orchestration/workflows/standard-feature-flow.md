@@ -48,12 +48,58 @@ The complete workflow for implementing a new feature:
 11. **Integration** - Infrastructure Engineer integrates new services, updates compose if needed.
 12. **Test** - QA Tester validates the full feature.
 13. **Regression Test** - QA Tester (or CI Agent) runs the full existing test suite (`./gradlew test` and `npm test`) to verify no regressions.
-14. **iOS Testing** - Execute the [iOS Testing Pipeline](../pipelines/ios-testing-pipeline.md) with the new feature to verify visual/UX quality on iOS simulator.
+14. **E2E Testing** - Execute the appropriate E2E testing pipeline based on project type (see E2E Pipeline Selection below).
 15. **Review** - Judge reviews QA results and gives final verdict.
 
 **Notes**:
 - Steps 5-6 and 11 are skipped if the Infrastructure Gate Checklist results are all No.
 - Steps 7-8 and 9-10 can run in parallel once architecture is approved (see [Parallel Work Protocol](./parallel-work-protocol.md)).
+- Step 14 is skipped if no E2E pipeline exists for the project type.
+
+---
+
+## Agent Selection by Tech Stack
+
+The orchestrator selects agents based on the project's tech stack declared in its `CLAUDE.md`.
+
+### Frontend Agents
+
+| Tech Stack | Developer Agent | Code Judge |
+|-----------|----------------|------------|
+| React Native + Expo | `react-native-expo-frontend-developer` | `react-native-expo-code-judge` |
+| React + Vite + Tailwind (web) | `react-vite-frontend-developer` | `react-vite-code-judge` |
+
+### Backend Agents
+
+| Tech Stack | Developer Agent | Code Judge |
+|-----------|----------------|------------|
+| Kotlin + Spring Boot + PostgreSQL | `kotlin-spring-boot-backend-developer` | `kotlin-spring-boot-code-judge` |
+
+### Cross-Stack Judges
+
+| Stack Combination | Judge |
+|-------------------|-------|
+| Kotlin Spring Boot + React Native | `kotlin-spring-react-native-judge` |
+| Kotlin Spring Boot + React Web | `kotlin-spring-react-vite-judge` |
+
+### Other Agents (stack-agnostic)
+
+These agents work with any tech stack:
+- `base-product-ideator` / `{project}-product-ideator`
+- `{stack}-architect`
+- `infrastructure-engineer` / `infrastructure-judge`
+- `qa-tester` / `qa-judge`
+- `documentation`
+- `retrospective-analyst`
+
+---
+
+## E2E Pipeline Selection
+
+| Project Type | Pipeline | Notes |
+|-------------|----------|-------|
+| React Native / Expo (iOS) | [iOS Testing Pipeline](../pipelines/ios-testing-pipeline.md) | Requires Mac with Xcode + Simulator |
+| React web app | [React Playwright E2E Pipeline](../pipelines/react-playwright-e2e-pipeline.md) | Requires Playwright + Chromium |
 
 **QA Preparation**: After architecture approval (step 4), the QA Tester can begin writing test plans based on the approved architecture and user stories. This preparation work runs in parallel with implementation (steps 5-10) and does not require Judge review until the full feature test (step 12).
 
@@ -104,3 +150,4 @@ The orchestrator updates this file before spawning each subagent.
 - [Revision Flow](./revision-flow.md)
 - [Phase Rollback](./phase-rollback.md)
 - [iOS Testing Pipeline](../pipelines/ios-testing-pipeline.md)
+- [React Playwright E2E Pipeline](../pipelines/react-playwright-e2e-pipeline.md)
