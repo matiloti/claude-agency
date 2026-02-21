@@ -242,6 +242,10 @@ The system learns from past work through structured feedback processing. See `sy
 
 ## Orchestration Rules
 
+### Dependencies & Versions
+
+26. **Always use latest stable versions** — when adding any dependency, framework, library, or tool, always use the LATEST STABLE version available. Do not pin to old versions. Check the current latest version (via Context7, npm, Maven Central, or official docs) before adding any dependency. This applies to all agents: backend, frontend, infrastructure, and QA.
+
 ### Delegation
 
 1. **Always delegate to subagents** — use the Task tool (`subagent_type: "general-purpose"`) to spawn a subagent for each role (Ideator, Architect, Backend Developer, Frontend Developer, Infrastructure Engineer, QA Tester, Judge). Never perform their work yourself. Pass the filled-in prompt template as the `prompt` parameter.

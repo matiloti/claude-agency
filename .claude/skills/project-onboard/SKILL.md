@@ -138,14 +138,16 @@ Create the project orchestrator configuration file using the template below.
 
 ## Tech Stack
 
+**IMPORTANT: Always use the LATEST STABLE versions of all dependencies, frameworks, and libraries. Do not pin to old versions. Check the current latest version before adding any dependency.**
+
 <!-- TODO: Fill in the actual tech stack -->
-| Layer | Technology |
-|-------|-----------|
-| Mobile Frontend | <!-- e.g., React Native, Swift, etc. --> |
-| Backend | <!-- e.g., Kotlin Spring Boot, Node.js, etc. --> |
-| Database | <!-- e.g., PostgreSQL, MongoDB, etc. --> |
-| Testing (Backend) | <!-- e.g., JUnit, Jest, etc. --> |
-| Testing (Frontend) | <!-- e.g., React Testing Library, XCTest, etc. --> |
+| Layer | Technology | Version |
+|-------|-----------|---------|
+| Mobile Frontend | <!-- e.g., React Native, Swift, etc. --> | <!-- LATEST --> |
+| Backend | <!-- e.g., Kotlin Spring Boot, Node.js, etc. --> | <!-- LATEST --> |
+| Database | <!-- e.g., PostgreSQL, MongoDB, etc. --> | <!-- LATEST --> |
+| Testing (Backend) | <!-- e.g., JUnit, Jest, etc. --> | <!-- LATEST --> |
+| Testing (Frontend) | <!-- e.g., React Testing Library, XCTest, etc. --> | <!-- LATEST --> |
 
 ## Repository Structure
 
