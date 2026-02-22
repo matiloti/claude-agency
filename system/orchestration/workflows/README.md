@@ -1,6 +1,6 @@
 # Orchestration Workflows
 
-<!-- Last Updated: 2026-01-26 -->
+<!-- Last Updated: 2026-02-22 -->
 <!-- Status: Current -->
 <!-- Author: documentation-agent -->
 
@@ -13,6 +13,9 @@ This folder contains all orchestration workflows for the flashcards app multi-ag
 | Workflow | File | When to Use |
 |----------|------|-------------|
 | Standard Feature Flow | [standard-feature-flow.md](./standard-feature-flow.md) | New features, endpoints, screens |
+| Bug Fix Flow | [bug-fix-flow.md](./bug-fix-flow.md) | Bugs requiring investigation but no new features |
+| UI Improvements Flow | [ui-improvements-flow.md](./ui-improvements-flow.md) | Styling, layout, responsive, accessibility fixes |
+| Feature Improvement Flow | [feature-improvement-flow.md](./feature-improvement-flow.md) | Enhancing existing features without full rebuild |
 | Quick Fix Flow | [quick-fix-flow.md](./quick-fix-flow.md) | Config fixes, typos, dependency bumps |
 | Revision Flow | [revision-flow.md](./revision-flow.md) | After NEEDS_REVISION verdict |
 | Parallel Work Protocol | [parallel-work-protocol.md](./parallel-work-protocol.md) | Backend + Frontend after architecture |
