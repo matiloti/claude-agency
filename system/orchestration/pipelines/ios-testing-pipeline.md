@@ -1,10 +1,10 @@
 # iOS Testing Pipeline
 
-<!-- Last Updated: 2026-01-28 -->
+<!-- Last Updated: 2026-02-23 -->
 <!-- Status: Current -->
 <!-- Author: workflow-expert -->
 
-> Owner: QA Tester / Frontend Developer | Version: 2.3
+> Owner: QA Tester / Frontend Developer | Version: 2.4
 
 A linear, staged pipeline for comprehensive iOS app testing using Xcode MCP tools. This pipeline builds, deploys, tests, and reports on React Native iOS apps with emphasis on visual/UX quality detection.
 
@@ -304,7 +304,54 @@ Before starting this pipeline:
 
 ## Phase 4: Test
 
-**Objective**: Execute test flows with comprehensive visual/UX inspection.
+**Objective**: Execute test flows with comprehensive visual/UX inspection, with Visual QA as a hard PASS/FAIL gate.
+
+### Screenshot Visual Analysis (mandatory on every screenshot)
+
+Every screenshot captured MUST be analyzed for the following before the test step is logged as PASS:
+
+- [ ] **Layout not broken**: no elements overflowing their containers, no unexpected overlaps
+- [ ] **No overflow issues**: content does not extend beyond the device screen boundaries; no clipped text or truncated UI regions
+- [ ] **Responsiveness is intentional**: at each device size, elements reflow, stack, collapse into navigation drawers/sheets, and use native iOS patterns (bottom sheets, action sheets, compact navigation) — not just scaled down
+- [ ] **Visual hierarchy coherent**: headings, content, and actions are legible and logically ordered on each device form factor
+
+**If any of the above are violated**: the test step is marked **FAILED** (not a warning — a hard failure) with:
+- Specific description of the issue
+- Screenshot reference (filename)
+- Device/simulator where it occurred
+
+### Multi-Device Visual QA
+
+Run all major screens on each of the following simulator devices. These map to the equivalent web viewport breakpoints.
+
+| Device | Simulator | Equivalent Viewport | Expected Behavior |
+|--------|-----------|---------------------|-------------------|
+| iPhone SE (3rd gen) | iPhone SE | ~375px | Compact layout; all content reachable; touch targets ≥44pt |
+| iPhone 16 Pro | iPhone 16 Pro | ~393px | Standard layout; primary design target |
+| iPhone 16 Pro Max | iPhone 16 Pro Max | ~430px | Large display; no excessive whitespace |
+| iPad (standard) | iPad (10th gen) | ~768px+ | Two-column or split view; navigation as sidebar |
+
+**Each device must look intentionally designed for its form factor, not just stretched or squished.**
+
+#### Use Case Validation Checklist (all devices)
+
+- [ ] **Navigation on iPhone SE**: tab bar fully visible; touch targets ≥44pt height/width; no clipped labels
+- [ ] **Forms usable on all devices**: text fields do not overflow; labels remain visible; keyboard does not permanently obscure the submit button (scroll or KeyboardAvoidingView required)
+- [ ] **Data tables / lists responsive**: on compact devices, long rows use truncation with detail disclosure OR collapse to card layout — raw overflow that requires horizontal swipe without affordance is a FAIL
+- [ ] **Modals and sheets**: bottom sheets and modals do not overflow the screen on any device; if content is long, the sheet itself must be scrollable
+
+#### Screenshot Naming for Device Tests
+
+```
+{NN}_{flow}_{action}_{state}_{device}.png
+
+Examples:
+  20_dashboard_loaded_iphonese.png
+  21_dashboard_loaded_iphone16pro.png
+  22_dashboard_loaded_ipad.png
+  23_profile_form_iphonese.png
+  24_settings_sheet_iphone16promax.png
+```
 
 ### Test Execution Pattern
 
@@ -416,6 +463,12 @@ All user flows - 15-30 minutes:
 5. Edge cases (empty states, errors)
 6. Settings/preferences
 7. Logout/session management
+8. **Multi-Device Visual QA** — mandatory across all four simulator device types:
+   - **iPhone SE**: compact layout, touch targets ≥44pt, no clipped navigation labels
+   - **iPhone 16 Pro**: standard layout, primary design target
+   - **iPhone 16 Pro Max**: large display, no excessive whitespace gaps
+   - **iPad**: split-view or two-column navigation, sidebar patterns
+   At each device: screenshot every major screen and run the Screenshot Visual Analysis (see above). Any visual failure = test FAILED.
 
 #### Specific Flow (`{flow_name}`)
 Single flow as defined in app's test flow registry.
@@ -527,8 +580,42 @@ Key sections to complete:
 - Executive Summary with pass rate
 - Test Results by Flow with status table
 - Issues Found organized by severity
+- **Visual QA** — hard gate section (see below); must appear before the UX Assessment
 - Visual/UX Assessment
 - Recommendations
+
+### Visual QA Section (required in every report)
+
+> This section is a hard gate. Any FAIL here means the overall test result is FAILED regardless of functional test outcomes.
+
+Include a **Visual QA** section in the report with the following structure:
+
+#### Device Pass/Fail Summary
+
+| Device | Simulator | Status | Issues Found |
+|--------|-----------|--------|--------------|
+| iPhone SE | iPhone SE (3rd gen) | PASS / FAIL | {count} |
+| iPhone 16 Pro | iPhone 16 Pro | PASS / FAIL | {count} |
+| iPhone 16 Pro Max | iPhone 16 Pro Max | PASS / FAIL | {count} |
+| iPad | iPad (10th gen) | PASS / FAIL | {count} |
+
+#### Issues by Device
+
+For each device with issues:
+
+| # | Issue Description | Screenshot | Severity |
+|---|-------------------|------------|----------|
+| 1 | {specific description} | {filename} | FAIL |
+
+#### Overall Visual QA Verdict
+
+**PASS** — No visual issues found across all simulator devices.
+
+_or_
+
+**FAIL** — Visual issues found. All issues must be resolved before this pipeline reports SUCCESS.
+
+> **Follow-up task**: Update `templates/ios-test-report-template.md` to incorporate the Visual QA section structure above as a permanent template section.
 
 ---
 
@@ -567,6 +654,7 @@ Key sections to complete:
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 2.4 | 2026-02-23 | Added Screenshot Visual Analysis (mandatory on every screenshot); added Multi-Device Visual QA subsection in Phase 4 mapping viewport breakpoints to iOS simulator devices (iPhone SE ≈ 375px, iPhone 16 Pro ≈ 393px, iPad ≈ 768px+); added Use Case Validation Checklist (mobile nav, forms, tables, modals/sheets); added Visual QA report section structure as hard PASS/FAIL gate before UX Assessment; expanded Phase 4 Full Test to include multi-device Visual QA step |
 | 2.3 | 2026-01-28 | Added frontend port (Metro bundler) validation to Phase 0; expanded Gate 0 checklist |
 | 2.2 | 2026-01-27 | Applied critical fixes: Key Definitions section, 8-step example, clarified restart scope |
 | 2.1 | 2026-01-27 | Added Phase 0: Port & Connectivity Validation for multi-project environments |

@@ -1,10 +1,10 @@
 # React Playwright E2E Pipeline
 
-<!-- Last Updated: 2026-02-21 -->
+<!-- Last Updated: 2026-02-23 -->
 <!-- Status: Current -->
 <!-- Author: pristo -->
 
-> Owner: QA Tester / Frontend Developer | Version: 1.0
+> Owner: QA Tester / Frontend Developer | Version: 1.1
 
 A linear, staged pipeline for comprehensive E2E testing of React web applications using Playwright. Takes screenshots of all user flows, evaluates visual/UX quality, and generates a PDF report with improvement suggestions.
 
@@ -58,7 +58,8 @@ Exit States:
 | `app_url` | Yes | — | Base URL of the running app (e.g., `http://localhost:18790`) |
 | `test_scope` | No | `full` | Test scope: `full`, `smoke`, or specific flow name |
 | `browser` | No | `chromium` | Browser engine: `chromium`, `firefox`, `webkit` |
-| `viewport` | No | `1280x720` | Browser viewport size |
+| `viewport` | No | `1280x720` | Default browser viewport size |
+| `viewports` | No | `1920,1280,768,375` | Comma-separated list of widths for multi-viewport Visual QA |
 | `dark_mode` | No | `true` | Test in dark mode (prefers-color-scheme: dark) |
 | `generate_pdf` | No | `true` | Generate PDF report |
 | `screenshot_dir` | No | auto | Directory for screenshots |
@@ -110,7 +111,10 @@ Exit States:
 4. **Create Playwright config** (if not exists)
    ```typescript
    // e2e-tests/playwright.config.ts
-   import { defineConfig } from '@playwright/test';
+   import { defineConfig, devices } from '@playwright/test';
+
+   // Multi-viewport projects: each entry runs the full test suite at one viewport.
+   // Visual QA failures at any viewport mark the entire run as FAILED.
    export default defineConfig({
      testDir: './tests',
      timeout: 30000,
@@ -118,10 +122,27 @@ Exit States:
        baseURL: '{app_url}',
        screenshot: 'on',
        trace: 'on-first-retry',
-       viewport: { width: 1280, height: 720 },
        colorScheme: 'dark',
      },
      reporter: [['html', { open: 'never' }]],
+     projects: [
+       {
+         name: 'desktop-1920',
+         use: { viewport: { width: 1920, height: 1080 } },
+       },
+       {
+         name: 'laptop-1280',
+         use: { viewport: { width: 1280, height: 720 } },
+       },
+       {
+         name: 'tablet-768',
+         use: { viewport: { width: 768, height: 1024 } },
+       },
+       {
+         name: 'mobile-375',
+         use: { viewport: { width: 375, height: 812 } },
+       },
+     ],
    });
    ```
 
@@ -342,7 +363,12 @@ All user flows — 15-30 minutes:
 3. Form validation (invalid inputs)
 4. Search/filter functionality
 5. Navigation (all sidebar links)
-6. Responsive checks (1920px, 1280px, 768px)
+6. **Multi-Viewport Visual QA** — mandatory at all four breakpoints:
+   - **1920px** (desktop): full layout, all columns visible, no wasted whitespace
+   - **1280px** (laptop): standard layout, primary target
+   - **768px** (tablet): two-column collapse, navigation reflows, no horizontal scroll
+   - **375px** (mobile): single-column, hamburger menus active, touch targets ≥44px CSS
+   At each breakpoint: screenshot every major screen and run the Screenshot Visual Analysis (see Phase 4). Any visual failure = test FAILED.
 7. Error states
 8. Empty states
 
@@ -350,7 +376,54 @@ All user flows — 15-30 minutes:
 
 ## Phase 4: Visual & UX Assessment
 
-**Objective**: Evaluate visual quality and UX of every unique screen.
+**Objective**: Evaluate visual quality and UX of every unique screen, with Visual QA as a hard PASS/FAIL gate.
+
+### Screenshot Visual Analysis (mandatory on every screenshot)
+
+Every screenshot captured MUST be analyzed for the following before the test step is logged as PASS:
+
+- [ ] **Layout not broken**: no elements overflowing their containers, no unexpected overlaps
+- [ ] **No overflow issues**: tables, cards, and text do not extend beyond their containers; horizontal scrollbars do not appear at expected viewports
+- [ ] **Responsiveness is intentional**: elements reflow, stack, collapse into menus, and adopt mobile patterns — not just shrunk. The layout must look intentionally designed at each breakpoint.
+- [ ] **Visual hierarchy coherent**: headings, content, and actions are legible and logically ordered at each breakpoint
+
+**If any of the above are violated**: the test step is marked **FAILED** (not a warning — a hard failure) with:
+- Specific description of the issue
+- Screenshot reference (filename)
+- Viewport width where it occurred
+
+### Multi-Viewport Visual QA
+
+Run all major screens at each of the following viewports. Use Playwright `projects` config (see Phase 0) to execute tests at all widths automatically.
+
+| Viewport | Width | Expected Behavior |
+|----------|-------|-------------------|
+| Desktop | 1920px | Full layout; all columns/panels visible; no wasted whitespace |
+| Laptop | 1280px | Standard layout; primary design target |
+| Tablet | 768px | Two-column collapse; navigation reflows; no horizontal scroll |
+| Mobile | 375px | Single-column; hamburger menu active; touch targets ≥44px CSS |
+
+**Each viewport must look intentionally designed, not just squished.**
+
+#### Use Case Validation Checklist (all viewports)
+
+- [ ] **Navigation on mobile (375px)**: hamburger menu opens/closes correctly; touch targets ≥44px CSS height/width
+- [ ] **Forms usable at all widths**: inputs do not overflow; labels remain visible; submit button is reachable without scrolling past the fold (or scrollable with clear affordance)
+- [ ] **Data tables responsive**: on 768px and below, tables use horizontal scroll with sticky first column OR collapse to card layout — raw horizontal overflow without scroll is a FAIL
+- [ ] **Modals and sheets**: do not overflow the viewport on any breakpoint; if content is long, the modal itself is scrollable (not the page behind it)
+
+#### Screenshot Naming for Viewport Tests
+
+```
+{NN}_{flow}_{action}_{state}_{viewport}px.png
+
+Examples:
+  20_dashboard_loaded_1920px.png
+  21_dashboard_loaded_1280px.png
+  22_dashboard_loaded_768px.png
+  23_dashboard_loaded_375px.png
+  24_projects_list_loaded_375px.png
+```
 
 ### Visual Inspection Checklist
 
@@ -516,6 +589,51 @@ Add summary to `knowledge/project-status.md`.
 
 ---
 
+## Visual QA
+
+> This section is a hard gate. Any FAIL here means the overall test result is FAILED regardless of functional test outcomes.
+
+### Viewport Pass/Fail Summary
+
+| Viewport | Width | Status | Issues Found |
+|----------|-------|--------|--------------|
+| Desktop | 1920px | PASS / FAIL | {count} |
+| Laptop | 1280px | PASS / FAIL | {count} |
+| Tablet | 768px | PASS / FAIL | {count} |
+| Mobile | 375px | PASS / FAIL | {count} |
+
+### Issues by Viewport
+
+#### 1920px — Desktop
+| # | Issue Description | Screenshot | Severity |
+|---|-------------------|------------|----------|
+| 1 | {specific description} | {filename} | FAIL |
+
+#### 1280px — Laptop
+| # | Issue Description | Screenshot | Severity |
+|---|-------------------|------------|----------|
+| 1 | {specific description} | {filename} | FAIL |
+
+#### 768px — Tablet
+| # | Issue Description | Screenshot | Severity |
+|---|-------------------|------------|----------|
+| 1 | {specific description} | {filename} | FAIL |
+
+#### 375px — Mobile
+| # | Issue Description | Screenshot | Severity |
+|---|-------------------|------------|----------|
+| 1 | {specific description} | {filename} | FAIL |
+
+### Overall Visual QA Verdict
+
+**PASS** — No visual issues found across all viewports.
+
+_or_
+
+**FAIL** — Visual issues found. See issues listed above. All issues must be resolved before this pipeline reports SUCCESS.
+
+---
+
 ## Visual & UX Assessment
 
 ### Screen Scores
@@ -602,4 +720,5 @@ Add summary to `knowledge/project-status.md`.
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 1.1 | 2026-02-23 | Added Screenshot Visual Analysis (mandatory on every screenshot); added Multi-Viewport Visual QA subsection in Phase 4 with explicit 1920/1280/768/375px breakpoints; added Use Case Validation Checklist (mobile nav, forms, tables, modals); added Visual QA section to Report Template as hard PASS/FAIL gate before UX Assessment; updated Playwright config example to show multi-viewport projects; expanded Phase 3 Full Test responsive checks |
 | 1.0 | 2026-02-21 | Initial version. Adapted from iOS Testing Pipeline for React web + Playwright |
